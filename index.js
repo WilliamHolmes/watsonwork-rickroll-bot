@@ -22,7 +22,7 @@ app.on('message-created', (message, annotation) => {
         scraperWeb(url, (arr = []) => {
             const res = (arr.join(' ') || '').toLowerCase();
             console.log('Website Text', res);
-            const rickrolled = _.some(contants.FILTERS, filter => res.includes(filter));
+            const rickrolled = _.some(constants.FILTERS, filter => res.includes(filter));
             console.log('rickrolled', rickrolled);
             if (rickrolled) {
                 app.sendMessage(spaceId, {
