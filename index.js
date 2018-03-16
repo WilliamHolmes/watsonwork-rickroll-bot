@@ -16,9 +16,12 @@ app.authenticate().then(() => app.uploadPhoto('./appicon.jpg'));
 app.on('message-created', (message, annotation) => {
     const { content = '', spaceId } = message;
     _.each(getURLs(content), url => {
+        console.log('Message URL', url);
         scraperWeb(url, (arr = []) => {
             const res = (arr.join('|') || '').toLowerCase();
+            console.log('Website Text', res);
             const rickrolled = _.some(contants.FILTERS, filter => res.includes(filter));
+            console.log('rickrolled', rickrolled);
             if (rickrolled) {
                 app.sendMessage(spaceId, {
                     actor: { name: 'RickRoll Warning' },
