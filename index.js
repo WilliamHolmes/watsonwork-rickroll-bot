@@ -1,4 +1,4 @@
-const getURLs = require('get-urls ');
+const getURLs = require('get-urls');
 const scraperWeb = require('scraper-web');
 const _ = require('underscore');
 
@@ -18,10 +18,10 @@ app.on('message-created', (message, annotation) => {
     _.each(getURLs(content), url => {
         scraperWeb(url, (arr = []) => {
             const res = (arr.join('|') || '').toLowerCase();
-            const rickrolled = _.some(contants.fitler, filter => res.contains(filter));
+            const rickrolled = _.some(contants.FILTERS, filter => res.includes(filter));
             if (rickrolled) {
                 app.sendMessage(spaceId, {
-                    actor: { name: 'Rick Rolled' },
+                    actor: { name: 'RickRoll Warning' },
                     color: constants.COLOR_ERROR,
                     text: 'Never Gonna Give You Up!',
                     title: '',
