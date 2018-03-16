@@ -15,7 +15,9 @@ app.authenticate().then(() => app.uploadPhoto('./appicon.jpg'));
 
 app.on('message-created', (message, annotation) => {
     const { content = '', spaceId } = message;
-    _.each(getURLs(content), url => {
+    const urls = [...(getURLs(content) || [])];
+    console.log('Message URLS', urls);
+    _.each(urls, url => {
         console.log('Message URL', url);
         scraperWeb(url, (arr = []) => {
             const res = (arr.join('|') || '').toLowerCase();
