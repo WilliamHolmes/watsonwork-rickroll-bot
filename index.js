@@ -26,7 +26,7 @@ app.on('message-created', (message, annotation) => {
             console.log('rickrolled', rickrolled);
             if (rickrolled) {
                 app.sendMessage(spaceId, {
-                    actor: { name: 'RickRoll Warning' },
+                    actor: { name: 'Rick Astley' },
                     color: constants.COLOR_ERROR,
                     text: `[${url}](${url})\n*Never Gonna Give You Up!*`,
                     title: '',
