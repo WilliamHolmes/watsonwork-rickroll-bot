@@ -29,6 +29,6 @@ app.on('message-created', (message, annotation) => {
                     version: '1'
                 });
             }
-        })
+        });
     });
 });
