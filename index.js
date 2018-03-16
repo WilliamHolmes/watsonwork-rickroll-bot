@@ -20,7 +20,7 @@ app.on('message-created', (message, annotation) => {
     _.each(urls, url => {
         console.log('Message URL', url);
         scraperWeb(url, (arr = []) => {
-            const res = (arr.join('|') || '').toLowerCase();
+            const res = (arr.join(' ') || '').toLowerCase();
             console.log('Website Text', res);
             const rickrolled = _.some(contants.FILTERS, filter => res.includes(filter));
             console.log('rickrolled', rickrolled);
