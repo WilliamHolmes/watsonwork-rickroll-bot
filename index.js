@@ -28,7 +28,7 @@ app.on('message-created', (message, annotation) => {
                 app.sendMessage(spaceId, {
                     actor: { name: '! Warning !' },
                     color: constants.COLOR_ERROR,
-                    text: `[${url}](${url})\n*Never Gonna Give You Up!*`,
+                    text: `[${url}](${url})\n*♫♩ Never Gonna Give You Up!*`,
                     title: '',
                     type: 'generic',
                     version: '1'
