@@ -11,7 +11,7 @@ let DOCS = {};
 const api = {
     getCloudant: () => {
         if(!cloudant) {
-            cloudant = Cloudant({ vcapInstanceName: 'rickroll', vcapServices: JSON.parse(VCAP_SERVICES) });
+            cloudant = Cloudant({ vcapServices: JSON.parse(VCAP_SERVICES) });
         }
         console.log('***** getCloudant', cloudant);
         return cloudant;
