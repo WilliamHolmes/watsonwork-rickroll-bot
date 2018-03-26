@@ -1,3 +1,4 @@
+const Cloudant = require('cloudant');
 const getURLs = require('get-urls');
 const scraperWeb = require('scraper-web');
 const _ = require('underscore');
@@ -9,9 +10,17 @@ const app = appFramework.create();
 
 const UI = require('watsonworkspace-sdk').UI;
 
+const API = require('./db');
+
 const constants = require('./js/constants');
 
 app.authenticate().then(() => app.uploadPhoto('./appicon.jpg'));
+
+try{
+    API.isRickRoll();
+} catch(e) {
+    console.log('*** ERRROR', e);
+}
 
 app.on('message-created', (message, annotation) => {
     const { content = '', spaceId } = message;
