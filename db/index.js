@@ -1,6 +1,8 @@
 const Cloudant = require('cloudant');
 const constants = require('../js/constants');
 
+const { env: { CLOUDANT_URL, CLOUDANT_DB } } = process;
+
 let cloudant = null;
 let db = null;
 
@@ -9,14 +11,16 @@ let DOCS = {};
 const api = {
     getCloudant: () => {
         if(!cloudant) {
-            cloudant = Cloudant({ url: process.env.CLOUDANT_URL });
+            cloudant = Cloudant({ url: CLOUDANT_URL });
         }
+        console.log('***** getCloudant', cloudant);
         return cloudant;
     },
     getDB: () => {
         if(!db){
-            db = api.getCloudant().db.use(process.env.CLOUDANT_DB);
+            db = api.getCloudant().db.use(CLOUDANT_DB);
         }
+        console.log('***** getDB', db);
         return db;
     },
     getDOC: doc => {
@@ -25,6 +29,7 @@ const api = {
                resolve(DOCS[doc]);
             } else {
                 api.getDB().get(doc, (err, data) => {
+                    console.log('***** Get Doc OK', err, data);
                     if(err) {
                         reject(err, data);
                     } else {
@@ -36,6 +41,7 @@ const api = {
         })
     },
     isRickRoll: () => {
+        console.log('isRickRoll', constants.db.CONFIRMED);
         return api.getDOC(constants.db.CONFIRMED).then(data => {
             console.log('***** CONFIRMED OK', data);
         })
