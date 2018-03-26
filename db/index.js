@@ -1,7 +1,7 @@
 const Cloudant = require('cloudant');
 const constants = require('../js/constants');
 
-const { env: { CLOUDANT_URL, CLOUDANT_DB } } = process;
+const { env: { CLOUDANT_URL, CLOUDANT_DB, VCAP_SERVICES } } = process;
 
 let cloudant = null;
 let db = null;
@@ -11,7 +11,7 @@ let DOCS = {};
 const api = {
     getCloudant: () => {
         if(!cloudant) {
-            cloudant = Cloudant({ url: CLOUDANT_URL });
+            cloudant = Cloudant({ vcapInstanceName: 'rickroll', vcapServices: JSON.parse(VCAP_SERVICES) });
         }
         console.log('***** getCloudant', cloudant);
         return cloudant;
