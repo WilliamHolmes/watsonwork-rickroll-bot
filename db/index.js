@@ -1,8 +1,10 @@
 const Cloudant = require('cloudant');
-const constants = require('./js/constants');
+const constants = require('../js/constants');
 
 let cloudant = null;
 let db = null;
+
+let DOCS = {};
 
 const api = {
     getCloudant: () => {
@@ -18,10 +20,19 @@ const api = {
         return db;
     },
     getDOC: doc => {
-        return new Promise((resovle, reject) => {
-            api.getDB().get(doc, (err, data) => {
-                err ? reject(err, data) : resolve(data);
-            });
+        return new Promise((resolve, reject) => {
+            if(DOCS[doc]) {
+               resolve(DOCS[doc]);
+            } else {
+                api.getDB().get(doc, (err, data) => {
+                    if(err) {
+                        reject(err, data);
+                    } else {
+                        DOCS[doc] = data;
+                        resolve(DOCS[doc]);
+                    }
+                });
+            }
         })
     },
     isRickRoll: () => {
