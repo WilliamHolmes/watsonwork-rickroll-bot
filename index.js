@@ -35,7 +35,7 @@ app.on('message-created', (message, annotation) => {
         console.log('Message URL', url);
         API.isIgnored(url).then(isIgnored => {
             if(!isIgnored){
-                API.isConfirmed(url).then(isConfirmed => {
+                API.isRickRoll(url).then(isConfirmed => {
                     if(isConfirmed) {
                         sendAnnotaion(spaceId, url);
                     } else {
