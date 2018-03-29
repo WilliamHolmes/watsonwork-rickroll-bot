@@ -16,10 +16,15 @@ const constants = require('./js/constants');
 
 app.authenticate().then(() => app.uploadPhoto('./appicon.jpg'));
 
-try{
-    API.isRickRoll();
-} catch(e) {
-    console.log('*** ERRROR', e);
+const sendAnnotaion = (spaceId, url) => {
+    app.sendMessage(spaceId, {
+        actor: { name: '! Warning !' },
+        color: constants.COLOR_ERROR,
+        text: `[${url}](${url})\n*♫♩ Never Gonna Give You Up!*`,
+        title: '',
+        type: 'generic',
+        version: '1'
+    });
 }
 
 app.on('message-created', (message, annotation) => {
@@ -28,19 +33,22 @@ app.on('message-created', (message, annotation) => {
     console.log('Message URLS', urls);
     _.each(urls, url => {
         console.log('Message URL', url);
-        scraperWeb(url, (arr = []) => {
-            const res = (arr.join(' ') || '').toLowerCase();
-            console.log('Website Text', res);
-            const rickrolled = _.some(constants.FILTERS, filter => res.includes(filter));
-            console.log('rickrolled', rickrolled);
-            if (rickrolled) {
-                app.sendMessage(spaceId, {
-                    actor: { name: '! Warning !' },
-                    color: constants.COLOR_ERROR,
-                    text: `[${url}](${url})\n*♫♩ Never Gonna Give You Up!*`,
-                    title: '',
-                    type: 'generic',
-                    version: '1'
+        API.isIgnore(url).then(isIgnore => {
+            if(!isIgnore){
+                API.isConfirmed(url).then(isConfirmed => {
+                    if(isConfirmed) {
+                        sendAnnotaion(spaceId, url);
+                    } else {
+                        scraperWeb(url, (arr = []) => {
+                            const res = (arr.join(' ') || '').toLowerCase();
+                            console.log('Website Text', res);
+                            const rickrolled = _.some(constants.FILTERS, filter => res.includes(filter));
+                            console.log('rickrolled', rickrolled);
+                            if (rickrolled) {
+                                sendAnnotaion(spaceId, url);
+                            }
+                        });
+                    }
                 });
             }
         });

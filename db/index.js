@@ -11,7 +11,7 @@ let DOCS = {};
 const api = {
     getCloudant: () => {
         if(!cloudant) {
-            cloudant = Cloudant({ vcapServices: JSON.parse(VCAP_SERVICES) });
+            cloudant = Cloudant({ vcapServices: JSON.parse(VCAP_SERVICES), plugins: 'promises' });
         }
         console.log('***** getCloudant', cloudant);
         return cloudant;
@@ -40,21 +40,22 @@ const api = {
             }
         })
     },
-    isRickRoll: () => {
-        console.log('isRickRoll', constants.db.CONFIRMED);
-        return api.getDOC(constants.db.CONFIRMED).then(data => {
-            console.log('***** CONFIRMED OK', data);
-        })
-        .catch(err => {
-            console.log('***** CONFIRMED ERROR', err);
-        });
+    isRickRoll: url  => {
+        console.log('isRickRoll', url);
+        return api.getDOC(constants.db.CONFIRMED)
+            .then(({ confirmed }) => _.has(confirmed, url))
+            .catch(err => {
+                console.log('***** CONFIRMED ERROR', err);
+                return false;
+            });
     },
-    isIgnore: () => {
-        return api.getDOC(constants.db.IGNORED).then(data => {
-            console.log('***** isIgnore OK', data);
-        })
+    isIgnore: url => {
+        console.log('isIgnore', url);
+        return api.getDOC(constants.db.IGNORED)
+        .then(({ confirmed }) => _.has(confirmed, url))
         .catch(err => {
             console.log('***** isIgnore ERROR', err);
+            return false;
         });
     }
 }
