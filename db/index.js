@@ -41,7 +41,10 @@ const api = {
     isRickRoll: url  => {
         console.log('isRickRoll', url);
         return api.getDOC(constants.db.CONFIRMED)
-            .then(({ confirmed }) => _.has(confirmed, url))
+            .then(({ confirmed }) => {
+                console.log('**** confirmed map', confirmed);
+                return _.has(confirmed, url)
+            })
             .catch(err => {
                 console.log('***** CONFIRMED ERROR', err);
                 return false;
@@ -50,7 +53,10 @@ const api = {
     isIgnored: url => {
         console.log('isIgnored', url);
         return api.getDOC(constants.db.IGNORED)
-        .then(({ ignored }) => _.has(ignored, url))
+        .then(({ ignored }) => {
+            console.log('**** confirmed map', ignored);
+            return _.has(ignored, url)
+        })
         .catch(err => {
             console.log('***** IGNORED ERROR', err);
             return false;
