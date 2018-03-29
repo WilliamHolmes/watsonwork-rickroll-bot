@@ -1,3 +1,4 @@
+const _ = require('underscore');
 const Cloudant = require('cloudant');
 const constants = require('../js/constants');
 
