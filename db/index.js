@@ -7,7 +7,7 @@ const { env: { CLOUDANT_URL, CLOUDANT_DB, VCAP_SERVICES } } = process;
 let cloudant = null;
 let db = null;
 
-let DOC = {};
+let DOC = null;
 
 const api = {
     getCloudant: () => {
@@ -47,11 +47,9 @@ const api = {
     process: (url, key) => {
         console.log(`*** Check ${key}`, url);
         return api.getDOC()
-        .then(data => {
-            console.log(`${key} DATA`, data);
-           const { [key]: arr = [] } = data;
-            console.log(`**** ${key} map`, arr);
-            return _.some(arr, item => url.includes(item));
+        .then(({ [key]: data = [] }) => {
+            console.log(`**** ${key} map`, data);
+            return _.some(data, item => url.includes(item));
         })
         .catch(err => {
             console.log(`***** ${key} ERROR`, err);
