@@ -49,12 +49,12 @@ const api = {
                 return false;
             });
     },
-    isIgnore: url => {
-        console.log('isIgnore', url);
+    isIgnored: url => {
+        console.log('isIgnored', url);
         return api.getDOC(constants.db.IGNORED)
         .then(({ confirmed }) => _.has(confirmed, url))
         .catch(err => {
-            console.log('***** isIgnore ERROR', err);
+            console.log('***** isIgnored ERROR', err);
             return false;
         });
     }

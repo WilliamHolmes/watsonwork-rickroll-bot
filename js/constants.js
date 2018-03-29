@@ -4,7 +4,7 @@ const constants = {
     db: {
         NAME: 'rickroll',
         CONFIRMED: 'confirmed',
-        IGNORED: 'ingnore'
+        IGNORED: 'ignored'
     }
 }
 

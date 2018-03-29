@@ -33,8 +33,8 @@ app.on('message-created', (message, annotation) => {
     console.log('Message URLS', urls);
     _.each(urls, url => {
         console.log('Message URL', url);
-        API.isIgnore(url).then(isIgnore => {
-            if(!isIgnore){
+        API.isIgnored(url).then(isIgnored => {
+            if(!isIgnored){
                 API.isConfirmed(url).then(isConfirmed => {
                     if(isConfirmed) {
                         sendAnnotaion(spaceId, url);
