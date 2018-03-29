@@ -42,7 +42,7 @@ const api = {
         return api.process(url, 'confirmed');
     },
     isIgnored: url => {
-        return api.process(url, 'isIgnored');
+        return api.process(url, 'ignored');
     },
     process: (url, key) => {
         console.log(`*** ${key}`, url);
