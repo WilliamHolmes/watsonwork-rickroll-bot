@@ -46,7 +46,7 @@ const api = {
     },
     process: (url, key) => {
         return api.getDOC()
-        .then(({ [key]: data = [] }) =>  _.some(data, item => url.includes(item)))
+        .then(({ [key]: data = [] }) =>  _.some(data, item => url.toLowerCase().includes(item.toLowerCase())))
         .catch(err => false);
     }
 }
