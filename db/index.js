@@ -39,28 +39,22 @@ const api = {
         })
     },
     isRickRoll: url  => {
-        console.log('isRickRoll', url);
-        return api.getDOC()
-            .then(({ confirmed }) => {
-                console.log('**** confirmed map', confirmed);
-                return _.has(confirmed, url)
-            })
-            .catch(err => {
-                console.log('***** CONFIRMED ERROR', err);
-                return false;
-            });
+        return api.process(url, 'confirmed');
     },
     isIgnored: url => {
-        console.log('isIgnored', url);
+        return api.process(url, 'isIgnored');
+    },
+    process: (url, key) => {
+        console.log(`*** ${key}`, url);
         return api.getDOC()
-            .then(({ ignored }) => {
-                console.log('**** confirmed map', ignored);
-                return _.has(ignored, url)
-            })
-            .catch(err => {
-                console.log('***** IGNORED ERROR', err);
-                return false;
-            })
+        .then(({ [key]: data = [] }) => {
+            console.log(`**** ${key} map`, data);
+            return _.some(data, item => url.startsWith(item));
+        })
+        .catch(err => {
+            console.log(`***** ${key} ERROR`, err);
+            return false;
+        })
     }
 }
 
