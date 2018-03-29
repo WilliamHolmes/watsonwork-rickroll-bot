@@ -39,17 +39,19 @@ const api = {
         })
     },
     isRickRoll: url  => {
-        return api.process(url, 'confirmed');
+        return api.process(url, constants.db.keys.CONFIRMED);
     },
     isIgnored: url => {
-        return api.process(url, 'ignored');
+        return api.process(url, constants.db.keys.IGNORED);
     },
     process: (url, key) => {
-        console.log(`*** ${key}`, url);
+        console.log(`*** Check ${key}`, url);
         return api.getDOC()
-        .then(({ [key]: data = [] }) => {
-            console.log(`**** ${key} map`, data);
-            return _.some(data, item => url.includes(item));
+        .then(data => {
+            console.log(`${key} DATA`, data);
+           const { [key]: arr = [] } = data;
+            console.log(`**** ${key} map`, arr);
+            return _.some(arr, item => url.includes(item));
         })
         .catch(err => {
             console.log(`***** ${key} ERROR`, err);
