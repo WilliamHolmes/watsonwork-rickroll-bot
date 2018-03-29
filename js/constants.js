@@ -3,8 +3,7 @@ const constants = {
     FILTERS: ['rick roll', 'rickroll', 'never gonna give you up', 'rick astley'],
     db: {
         NAME: 'rickroll',
-        CONFIRMED: 'confirmed',
-        IGNORED: 'ignored'
+        DOC: 'isRickRoll'
     }
 }
 
