@@ -49,7 +49,7 @@ const api = {
         return api.getDOC()
         .then(({ [key]: data = [] }) => {
             console.log(`**** ${key} map`, data);
-            return _.some(data, item => url.startsWith(item));
+            return _.some(data, item => url.includes(item));
         })
         .catch(err => {
             console.log(`***** ${key} ERROR`, err);
