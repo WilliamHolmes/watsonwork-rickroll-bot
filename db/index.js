@@ -14,14 +14,12 @@ const api = {
         if(!cloudant) {
             cloudant = Cloudant({ vcapServices: JSON.parse(VCAP_SERVICES), plugins: 'promises' });
         }
-        console.log('***** getCloudant', cloudant);
         return cloudant;
     },
     getDB: () => {
         if(!db){
             db = api.getCloudant().db.use(CLOUDANT_DB);
         }
-        console.log('***** getDB', db);
         return db;
     },
     getDOC: doc => {
@@ -30,7 +28,6 @@ const api = {
                resolve(DOCS[doc]);
             } else {
                 api.getDB().get(doc, (err, data) => {
-                    console.log('***** Get Doc OK', err, data);
                     if(err) {
                         reject(err, data);
                     } else {
@@ -53,11 +50,11 @@ const api = {
     isIgnored: url => {
         console.log('isIgnored', url);
         return api.getDOC(constants.db.IGNORED)
-        .then(({ confirmed }) => _.has(confirmed, url))
+        .then(({ ignored }) => _.has(ignored, url))
         .catch(err => {
-            console.log('***** isIgnored ERROR', err);
+            console.log('***** IGNORED ERROR', err);
             return false;
-        });
+        })
     }
 }
 
