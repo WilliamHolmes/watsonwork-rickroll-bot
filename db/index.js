@@ -7,7 +7,7 @@ const { env: { CLOUDANT_URL, CLOUDANT_DB, VCAP_SERVICES } } = process;
 let cloudant = null;
 let db = null;
 
-let DOCS = {};
+let DOC = {};
 
 const api = {
     getCloudant: () => {
@@ -22,17 +22,17 @@ const api = {
         }
         return db;
     },
-    getDOC: doc => {
+    getDOC: () => {
         return new Promise((resolve, reject) => {
-            if(DOCS[doc]) {
-               resolve(DOCS[doc]);
+            if(DOC) {
+               resolve(DOC);
             } else {
-                api.getDB().get(doc, (err, data) => {
+                api.getDB().get(constants.db.DOC, (err, data) => {
                     if(err) {
                         reject(err, data);
                     } else {
-                        DOCS[doc] = data;
-                        resolve(DOCS[doc]);
+                        DOC = data;
+                        resolve(DOC);
                     }
                 });
             }
@@ -40,7 +40,7 @@ const api = {
     },
     isRickRoll: url  => {
         console.log('isRickRoll', url);
-        return api.getDOC(constants.db.DOC)
+        return api.getDOC()
             .then(({ confirmed }) => {
                 console.log('**** confirmed map', confirmed);
                 return _.has(confirmed, url)
@@ -52,15 +52,15 @@ const api = {
     },
     isIgnored: url => {
         console.log('isIgnored', url);
-        return api.getDOC(constants.db.DOC)
-        .then(({ ignored }) => {
-            console.log('**** confirmed map', ignored);
-            return _.has(ignored, url)
-        })
-        .catch(err => {
-            console.log('***** IGNORED ERROR', err);
-            return false;
-        })
+        return api.getDOC()
+            .then(({ ignored }) => {
+                console.log('**** confirmed map', ignored);
+                return _.has(ignored, url)
+            })
+            .catch(err => {
+                console.log('***** IGNORED ERROR', err);
+                return false;
+            })
     }
 }
 
