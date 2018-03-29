@@ -30,7 +30,6 @@ const sendAnnotaion = (spaceId, url) => {
 app.on('message-created', (message, annotation) => {
     const { content = '', spaceId } = message;
     const urls = [...(getURLs(content) || [])];
-    console.log('Message URLS', urls);
     _.each(urls, url => {
         console.log('Message URL', url);
         API.isIgnored(url).then(isIgnored => {
@@ -41,7 +40,6 @@ app.on('message-created', (message, annotation) => {
                     } else {
                         scraperWeb(url, (arr = []) => {
                             const res = (arr.join(' ') || '').toLowerCase();
-                            console.log('Website Text', res);
                             const rickrolled = _.some(constants.FILTERS, filter => res.includes(filter));
                             console.log('rickrolled', rickrolled);
                             if (rickrolled) {
