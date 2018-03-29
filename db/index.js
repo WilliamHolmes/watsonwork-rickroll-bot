@@ -45,16 +45,9 @@ const api = {
         return api.process(url, constants.db.keys.IGNORED);
     },
     process: (url, key) => {
-        console.log(`*** Check ${key}`, url);
         return api.getDOC()
-        .then(({ [key]: data = [] }) => {
-            console.log(`**** ${key} map`, data);
-            return _.some(data, item => url.includes(item));
-        })
-        .catch(err => {
-            console.log(`***** ${key} ERROR`, err);
-            return false;
-        })
+        .then(({ [key]: data = [] }) =>  _.some(data, item => url.includes(item)))
+        .catch(err => false);
     }
 }
 

@@ -17,6 +17,7 @@ const constants = require('./js/constants');
 app.authenticate().then(() => app.uploadPhoto('./appicon.jpg'));
 
 const sendAnnotaion = (spaceId, url) => {
+    console.log('CONFIRMED RICKROLL', url);
     app.sendMessage(spaceId, {
         actor: { name: '! Warning !' },
         color: constants.COLOR_ERROR,
@@ -31,7 +32,7 @@ app.on('message-created', (message, annotation) => {
     const { content = '', spaceId } = message;
     const urls = [...(getURLs(content) || [])];
     _.each(urls, url => {
-        console.log('Message URL', url);
+        console.log('URL', url);
         API.isIgnored(url).then(isIgnored => {
             if(!isIgnored){
                 API.isRickRoll(url).then(isConfirmed => {
@@ -41,13 +42,14 @@ app.on('message-created', (message, annotation) => {
                         scraperWeb(url, (arr = []) => {
                             const res = (arr.join(' ') || '').toLowerCase();
                             const rickrolled = _.some(constants.FILTERS, filter => res.includes(filter));
-                            console.log('rickrolled', rickrolled);
                             if (rickrolled) {
                                 sendAnnotaion(spaceId, url);
                             }
                         });
                     }
                 });
+            } else {
+                console.log('IGNORED', url);
             }
         });
     });
