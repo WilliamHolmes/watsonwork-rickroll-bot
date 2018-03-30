@@ -52,9 +52,10 @@ const api = {
     addRickRoll: url => {
         DOC.confirmed = _.union(DOC.confirmed, [url]);
         api.getDB().insert(DOC, (err, data) => {
-            if (!error) {
+            if (data && data.rev) {
                 DOC._rev = data.rev;
-            } else {
+            }
+            if (error) {
                 DOC.confirmed = _.without(DOC.confirmed, url);
                 console.log('*** addRickRoll ERROR', err);
             }
