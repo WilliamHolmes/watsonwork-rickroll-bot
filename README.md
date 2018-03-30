@@ -1,5 +1,5 @@
 # watsonwork-rickroll-bot
-RickRoll URL detection Bot.
+Smart RickRoll URL detection Bot.
 
 ![](http://i.imgur.com/5q3R9.gif)
 
