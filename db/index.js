@@ -55,7 +55,7 @@ const api = {
             if (data && data.rev) {
                 DOC._rev = data.rev;
             }
-            if (error) {
+            if (err) {
                 DOC.confirmed = _.without(DOC.confirmed, url);
                 console.log('*** addRickRoll ERROR', err);
             }
