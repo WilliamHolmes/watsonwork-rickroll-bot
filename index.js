@@ -10,7 +10,7 @@ const app = appFramework.create();
 
 const UI = require('watsonworkspace-sdk').UI;
 
-const API = require('./db');
+const API = require('./api');
 
 const constants = require('./js/constants');
 

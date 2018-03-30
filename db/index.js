@@ -1,28 +1,54 @@
-const _ = require('underscore');
 const Cloudant = require('cloudant');
-
-const db = require('./db');
-
 const constants = require('../js/constants');
 
-const api = {
-    isRickRoll: url  => {
-        return api.process(url, constants.db.keys.CONFIRMED);
+const { env: { CLOUDANT_URL, CLOUDANT_DB, VCAP_SERVICES } } = process;
+
+let cloudant = null;
+let cloudantDB = null;
+
+const db = {
+    DOC: null,
+    getCloudant: () => {
+        if (!cloudant) {
+            cloudant = Cloudant({ vcapServices: JSON.parse(VCAP_SERVICES), plugins: 'promises' });
+        }
+        return cloudant;
     },
-    isIgnored: url => {
-        return api.process(url, constants.db.keys.IGNORED);
+    getDB: () => {
+        if (!cloudantDB) {
+            cloudantDB = db.getCloudant().db.use(CLOUDANT_DB);
+        }
+        return cloudantDB;
     },
-    process: (url, key) => {
-        return db.getDOC()
-            .then(({ [key]: data = [] }) =>  _.some(data, item => url.toLowerCase().includes(item.toLowerCase())))
-            .catch(err => false);
+    getDOC: () => {
+        return new Promise((resolve, reject) => {
+            if (db.DOC) {
+                resolve(db.DOC);
+            } else {
+                db.getDB().get(constants.db.DOC, (err, data) => {
+                    if (err) {
+                        reject(err, data);
+                    } else {
+                        db.DOC = data;
+                        resolve(db.DOC);
+                    }
+                });
+            }
+        })
     },
-    addRickRoll: url => {
-        return db.insert(doc => _.union(doc[constants.db.keys.CONFIRMED], [url]), doc => _.without(doc[constants.db.keys.CONFIRMED], url));
-    },
-    ignoreRickRoll: url => {
-        return db.insert(doc => _.without(doc[constants.db.keys.IGNORED], url), _.union(doc[constants.db.keys.IGNORED], [url]));
+    insert: (onInsert, onRevert) => {
+        db.getDOC().then(doc => {
+            doc = onInsert(doc);
+            db.getDB().insert(doc, (err, data) => {
+                if (data && data.rev) {
+                    doc._rev = data.rev;
+                }
+                if (err) {
+                    doc = onRevert(doc);
+                }
+            });
+        });
     }
 }
 
-module.exports = api;
+module.exports = db;
