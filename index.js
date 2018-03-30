@@ -44,6 +44,7 @@ app.on('message-created', (message, annotation) => {
                             const rickrolled = _.some(constants.FILTERS, filter => res.includes(filter));
                             if (rickrolled) {
                                 sendAnnotaion(spaceId, url);
+                                API.addRickRoll(url);
                             }
                         });
                     }

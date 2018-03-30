@@ -11,24 +11,24 @@ let DOC = null;
 
 const api = {
     getCloudant: () => {
-        if(!cloudant) {
+        if (!cloudant) {
             cloudant = Cloudant({ vcapServices: JSON.parse(VCAP_SERVICES), plugins: 'promises' });
         }
         return cloudant;
     },
     getDB: () => {
-        if(!db){
+        if (!db) {
             db = api.getCloudant().db.use(CLOUDANT_DB);
         }
         return db;
     },
     getDOC: () => {
         return new Promise((resolve, reject) => {
-            if(DOC) {
+            if (DOC) {
                resolve(DOC);
             } else {
                 api.getDB().get(constants.db.DOC, (err, data) => {
-                    if(err) {
+                    if (err) {
                         reject(err, data);
                     } else {
                         DOC = data;
@@ -48,6 +48,17 @@ const api = {
         return api.getDOC()
         .then(({ [key]: data = [] }) =>  _.some(data, item => url.toLowerCase().includes(item.toLowerCase())))
         .catch(err => false);
+    },
+    addRickRoll: url => {
+        DOC.confirmed = _.union(DOC.confirmed, [url]);
+        api.getDB().insert(DOC, (err, data) => {
+            if (!error) {
+                DOC._rev = data.rev;
+            } else {
+                DOC.confirmed = _.without(DOC.confirmed, url);
+                console.log('*** addRickRoll ERROR', err);
+            }
+        })
     }
 }
 
