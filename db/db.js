@@ -22,15 +22,15 @@ const db = {
     },
     getDOC: () => {
         return new Promise((resolve, reject) => {
-            if (api.DOC) {
-                resolve(api.DOC);
+            if (db.DOC) {
+                resolve(db.DOC);
             } else {
                 api.getDB().get(constants.db.DOC, (err, data) => {
                     if (err) {
                         reject(err, data);
                     } else {
-                        api.DOC = data;
-                        resolve(api.DOC);
+                        db.DOC = data;
+                        resolve(db.DOC);
                     }
                 });
             }

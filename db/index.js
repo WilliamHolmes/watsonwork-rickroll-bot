@@ -18,7 +18,10 @@ const api = {
             .catch(err => false);
     },
     addRickRoll: url => {
-        return db.insert(doc => _.union(doc.confirmed, [url]), doc => _.without(doc.confirmed, url));
+        return db.insert(doc => _.union(doc[constants.db.keys.CONFIRMED], [url]), doc => _.without(doc[constants.db.keys.CONFIRMED], url));
+    },
+    ignoreRickRoll: url => {
+        return db.insert(doc => _.without(doc[constants.db.keys.IGNORED], url), _.union(doc[constants.db.keys.IGNORED], [url]));
     }
 }
 

@@ -45,6 +45,8 @@ app.on('message-created', (message, annotation) => {
                             if (rickrolled) {
                                 sendAnnotaion(spaceId, url);
                                 API.addRickRoll(url);
+                            } else {
+                                API.ignoreRickRoll(url);
                             }
                         });
                     }
