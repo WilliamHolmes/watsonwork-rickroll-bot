@@ -5,8 +5,6 @@ const db = require('./db');
 
 const constants = require('../js/constants');
 
-let db = null;
-
 const api = {
     isRickRoll: url  => {
         return api.process(url, constants.db.keys.CONFIRMED);
