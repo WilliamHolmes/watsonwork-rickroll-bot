@@ -41,7 +41,7 @@ const db = {
             doc = onInsert(doc);
             db.getDB().insert(doc, (err, data) => {
                 if (data && data.rev) {
-                    db.DOC._rev = data.rev;
+                    doc._rev = data.rev;
                 }
                 if (err) {
                     doc = onRevert(doc);
