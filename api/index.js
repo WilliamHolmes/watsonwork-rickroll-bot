@@ -7,12 +7,12 @@ const constants = require('../js/constants');
 
 const api = {
     isRickRoll: url  => {
-        return api.process(url, constants.db.keys.CONFIRMED);
+        return api.hasURL(url, constants.db.keys.CONFIRMED);
     },
     isIgnored: url => {
-        return api.process(url, constants.db.keys.IGNORED);
+        return api.hasURL(url, constants.db.keys.IGNORED);
     },
-    process: (url, key) => {
+    hasURL: (url, key) => {
         return db.getDOC()
             .then(({ [key]: data = [] }) =>  _.some(data, item => url.toLowerCase().includes(item.toLowerCase())))
             .catch(err => false);

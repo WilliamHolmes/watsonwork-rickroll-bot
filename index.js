@@ -37,11 +37,14 @@ app.on('message-created', (message, annotation) => {
             if(!isIgnored){
                 API.isRickRoll(url).then(isConfirmed => {
                     if(isConfirmed) {
+                        console.log('isRickRoll CONFIRMED', url);
                         sendAnnotaion(spaceId, url);
                     } else {
+                        console.log('isRickRoll GET', url);
                         scraperWeb(url, (arr = []) => {
                             const res = (arr.join(' ') || '').toLowerCase();
                             const rickrolled = _.some(constants.FILTERS, filter => res.includes(filter));
+                            console.log('isRickRoll IS FOUND', rickrolled);
                             if (rickrolled) {
                                 sendAnnotaion(spaceId, url);
                                 API.addRickRoll(url);

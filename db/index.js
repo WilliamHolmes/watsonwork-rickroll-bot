@@ -40,12 +40,14 @@ const db = {
         db.getDOC().then(doc => {
             doc = onInsert(doc);
             db.getDB().insert(doc, (err, data) => {
+                console.log('DB insert', err, data);
                 if (data && data.rev) {
                     doc._rev = data.rev;
                 }
                 if (err) {
                     doc = onRevert(doc);
                 }
+                console.log('DB db.DOC', db.DOC);
             });
         });
     }
