@@ -21,7 +21,7 @@ const api = {
         return db.insert(doc => _.union(doc[constants.db.keys.CONFIRMED], [url]), doc => _.without(doc[constants.db.keys.CONFIRMED], url));
     },
     ignoreRickRoll: url => {
-        return db.insert(doc => _.without(doc[constants.db.keys.IGNORED], url), _.union(doc[constants.db.keys.IGNORED], [url]));
+        return db.insert(doc => _.without(doc[constants.db.keys.IGNORED], url), doc => _.union(doc[constants.db.keys.IGNORED], [url]));
     }
 }
 
