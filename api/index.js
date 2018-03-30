@@ -13,19 +13,13 @@ const api = {
         return api.hasURL(url, constants.db.keys.IGNORED);
     },
     addRickRoll: url => {
-        return db.insert(doc => api.addURL(doc, constants.db.keys.CONFIRMED), doc => api.removeURL(doc, constants.db.keys.CONFIRMED));
+        return db.insert(api.addURL(url, constants.db.keys.CONFIRMED), api.removeURL(url, constants.db.keys.CONFIRMED));
     },
     ignoreRickRoll: url => {
-        return db.insert(doc => api.addURL(doc, constants.db.keys.IGNORED), doc => api.removeURL(doc, constants.db.keys.IGNORED));
+        return db.insert(api.addURL(url, constants.db.keys.IGNORED), api.removeURL(url, constants.db.keys.IGNORED));
     },
-    addURL: (doc, key) => {
-        doc[key] = _.union(doc[key], [url]);
-        return doc;
-    },
-    removeURL: (doc, key) => {
-        doc[key] = _.without(doc[key], url);
-        return doc;
-    },
+    addURL: (url, key) => doc => { doc[key] = _.union(doc[key], [url]); return doc; },
+    removeURL: (url, key) => doc => { doc[key] = _.without(doc[key], url); return doc; },
     hasURL: (url, key) => {
         return db.getDOC()
             .then(({ [key]: data = [] }) =>  _.some(data, item => url.toLowerCase().includes(item.toLowerCase())))
