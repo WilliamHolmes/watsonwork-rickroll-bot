@@ -16,7 +16,7 @@ const db = {
     },
     getDB: () => {
         if (!cloudantDB) {
-            cloudantDB = api.getCloudant().db.use(CLOUDANT_DB);
+            cloudantDB = db.getCloudant().db.use(CLOUDANT_DB);
         }
         return cloudantDB;
     },
@@ -25,7 +25,7 @@ const db = {
             if (db.DOC) {
                 resolve(db.DOC);
             } else {
-                api.getDB().get(constants.db.DOC, (err, data) => {
+                db.getDB().get(constants.db.DOC, (err, data) => {
                     if (err) {
                         reject(err, data);
                     } else {
